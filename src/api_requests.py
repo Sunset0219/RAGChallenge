@@ -20,16 +20,15 @@ from tenacity import retry, stop_after_attempt, wait_fixed
 class BaseOpenaiProcessor:
     def __init__(self):
         self.llm = self.set_up_llm()
-        self.default_model = 'gpt-4o-2024-08-06'
-        # self.default_model = 'gpt-4o-mini-2024-07-18',
-
+        self.default_model = "qwen3-max"
     def set_up_llm(self):
         load_dotenv()
         llm = OpenAI(
-            api_key=os.getenv("OPENAI_API_KEY"),
+            api_key=os.getenv("QWEN_API_KEY"),
+            base_url="https://dashscope.aliyuncs.com/compatible-mode/v1",
             timeout=None,
             max_retries=2
-            )
+        )
         return llm
 
     def send_message(
@@ -365,10 +364,114 @@ class BaseGeminiProcessor:
             return response.text
         except Exception as e:
             raise Exception(f"API request failed after retries: {str(e)}")
+# Qwen3 API
+class BASEQwenProcessor(BaseOpenaiProcessor):
+    def __init__(self):
+        self.llm = self.set_up_llm()
+        self.default_model ="qwen3-max"
+    def set_up_llm(self):
+        load_dotenv()
+        llm = OpenAI(
+            api_key=os.getenv("QWEN_API_KEY"),
+            base_url="https://dashscope.aliyuncs.com/compatible-mode/v1",
+            timeout=None,
+            max_retries=2
+        )
+        return llm
+# DeepSeek
+class BaseDeepSeekProcessor(BaseOpenaiProcessor):
+    def __init__(self):
+        self.llm = self.set_up_llm()
+        self.default_model = 'deepseek-chat' # 或者 deepseek-reasoner
 
+    def set_up_llm(self):
+        load_dotenv()
+        # 初始化 DeepSeek 客户端
+        llm = OpenAI(
+            api_key=os.getenv("DEEPSEEK_API_KEY"), 
+            base_url="https://api.deepseek.com",
+            timeout=None,
+            max_retries=2
+        )
+        return llm
 
+    def send_message(
+        self,
+        model=None,
+        temperature=0.5,
+        seed=None,
+        system_content='You are a helpful assistant.',
+        human_content='Hello!',
+        is_structured=False,
+        response_format=None
+    ):
+        if model is None:
+            model = self.default_model
+        
+        # 1. 基础参数构建
+        params = {
+            "model": model,
+            "messages": [
+                {"role": "system", "content": system_content},
+                {"role": "user", "content": human_content}
+            ],
+            "temperature": temperature,
+            "seed": seed
+        }
+        
+        # DeepSeek R1 (reasoner) 不支持 temperature 参数，需要去掉
+        if "reasoner" in model:
+            params.pop("temperature", None)
+
+        # 2. 处理结构化输出 (这是关键修改点)
+        if is_structured:
+            # DeepSeek 不支持 .parse()，只支持 json_object 模式
+            # 我们告诉 API 我们要 JSON，但必须手动校验
+            params["response_format"] = {"type": "json_object"}
+            
+            # 使用普通的 create 方法，而不是 parse
+            completion = self.llm.chat.completions.create(**params)
+            content = completion.choices[0].message.content
+            
+            # 手动解析和验证
+            try:
+                # 使用 json_repair 修复可能存在的格式问题
+                from json_repair import repair_json
+                json_str = repair_json(content)
+                parsed_dict = json.loads(json_str)
+                
+                # 使用 Pydantic 验证数据结构
+                if response_format:
+                    validated_data = response_format.model_validate(parsed_dict)
+                    content = validated_data.model_dump()
+                else:
+                    content = parsed_dict
+                    
+            except Exception as e:
+                print(f"DeepSeek JSON parsing failed: {e}")
+                print(f"Raw content: {content}")
+                # 如果解析失败，这里可以加一个重试逻辑，或者直接返回空
+                # 为了简单起见，这里抛出异常或返回原始内容
+                raise e
+
+        else:
+            # 非结构化请求，正常调用
+            completion = self.llm.chat.completions.create(**params)
+            content = completion.choices[0].message.content
+
+        # 记录 Token 使用情况
+        if hasattr(completion, 'usage') and completion.usage:
+            self.response_data = {
+                "model": completion.model, 
+                "input_tokens": completion.usage.prompt_tokens, 
+                "output_tokens": completion.usage.completion_tokens
+            }
+            print(self.response_data)
+
+        return content
+        
 class APIProcessor:
-    def __init__(self, provider: Literal["openai", "ibm", "gemini"] ="openai"):
+    def __init__(self, provider: Literal["openai", "ibm", "gemini","qwen","deepseek"] ="openai"):
         self.provider = provider.lower()
         if self.provider == "openai":
             self.processor = BaseOpenaiProcessor()
@@ -376,6 +479,10 @@ class APIProcessor:
             self.processor = BaseIBMAPIProcessor()
         elif self.provider == "gemini":
             self.processor = BaseGeminiProcessor()
+        elif self.provider == "qwen":
+            self.processor = BASEQwenProcessor()
+        elif self.provider == "deepseek":
+            self.processor = BaseDeepSeekProcessor()
 
     def send_message(
         self,
@@ -404,7 +511,7 @@ class APIProcessor:
             response_format=response_format,
             **kwargs
         )
-
+    # 接收 rag_context（检索到的文档）和 question（问题），生成相应的内容
     def get_answer_from_rag_context(self, question, rag_context, schema, model):
         system_prompt, response_format, user_prompt = self._build_rag_context_prompts(schema)
         
@@ -418,6 +525,7 @@ class APIProcessor:
         self.response_data = self.processor.response_data
         return answer_dict
 
+    # 根据需要的输出类型（数字、人名、布尔值、比较结果等），选择不同的 Prompt 模板和 Pydantic Schema。
 
     def _build_rag_context_prompts(self, schema):
         """Return prompts tuple for the given schema."""
@@ -452,6 +560,7 @@ class APIProcessor:
             raise ValueError(f"Unsupported schema: {schema}")
         return system_prompt, response_format, user_prompt
 
+    # 将一个复杂的问题拆解或重写。例如：“特斯拉和蔚来的营收谁高？” -> 拆解为“特斯拉营收是多少？”和“蔚来营收是多少？”。
     def get_rephrased_questions(self, original_question: str, companies: List[str]) -> Dict[str, str]:
         """Use LLM to break down a comparative question into individual questions."""
         answer_dict = self.processor.send_message(
@@ -469,7 +578,7 @@ class APIProcessor:
         
         return questions_dict
 
-
+# 这是一个专门用于高并发场景的工具类，仅支持 OpenAI。，并发问问题
 class AsyncOpenaiProcessor:
     
     def _get_unique_filepath(self, base_filepath):

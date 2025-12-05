@@ -3,7 +3,7 @@ from typing import Literal, List, Union
 import inspect
 import re
 
-
+# 这是一个辅助函数，用于将 "指令" (instruction)、"JSON Schema" (pydantic_schema) 和 "示例" (example) 拼接成一个完整的 System Prompt 字符串。
 def build_system_prompt(instruction: str="", example: str="", pydantic_schema: str="") -> str:
     delimiter = "\n\n---\n\n"
     schema = f"Your answer should be in JSON and strictly follow this schema, filling in the fields in the order they are given:\n```\n{pydantic_schema}\n```"
@@ -15,13 +15,14 @@ def build_system_prompt(instruction: str="", example: str="", pydantic_schema: s
     system_prompt = instruction.strip() + schema + example
     return system_prompt
 
+# 拆解问题
 class RephrasedQuestionsPrompt:
     instruction = """
 You are a question rephrasing system.
 Your task is to break down a comparative question into individual questions for each company mentioned.
 Each output question must be self-contained, maintain the same intent and metric as the original question, be specific to the respective company, and use consistent phrasing.
 """
-
+# 比如把一个包含多个公司的问题拆解为多个只针对特定公司的小问题
     class RephrasedQuestion(BaseModel):
         """Individual question for a company"""
         company_name: str = Field(description="Company name, exactly as provided in quotes in the original question")
@@ -69,7 +70,7 @@ Output:
 
     system_prompt_with_schema = build_system_prompt(instruction, example, pydantic_schema)
 
-
+# 问答模板，通用指令
 class AnswerWithRAGContextSharedPrompt:
     instruction = """
 You are a RAG (Retrieval-Augmented Generation) answering system.
@@ -91,7 +92,7 @@ Here is the context:
 Here is the question:
 "{question}"
 """
-
+# 名称类回答 (AnswerWithRAGContextNamePrompt)
 class AnswerWithRAGContextNamePrompt:
     instruction = AnswerWithRAGContextSharedPrompt.instruction
     user_prompt = AnswerWithRAGContextSharedPrompt.user_prompt
@@ -109,7 +110,7 @@ Do not include pages with only tangentially related information or weak connecti
 At least one page should be included in the list.
 """)
 
-        final_answer: Union[str, Literal["N/A"]] = Field(description="""
+        final_answer: Union[str, Literal["N/A"],None] = Field(description="""
 If it is a company name, should be extracted exactly as it appears in question.
 If it is a person name, it should be their full name.
 If it is a product name, it should be extracted exactly as it appears in the context.
@@ -140,7 +141,7 @@ Answer:
     system_prompt_with_schema = build_system_prompt(instruction, example, pydantic_schema)
 
 
-
+# 数字类回答
 class AnswerWithRAGContextNumberPrompt:
     instruction = AnswerWithRAGContextSharedPrompt.instruction
     user_prompt = AnswerWithRAGContextSharedPrompt.user_prompt
@@ -171,7 +172,7 @@ Do not include pages with only tangentially related information or weak connecti
 At least one page should be included in the list.
 """)
 
-        final_answer: Union[float, int, Literal['N/A']] = Field(description="""
+        final_answer: Union[float, int, Literal['N/A'],None] = Field(description="""
 An exact metric number is expected as the answer.
 - Example for percentages:
     Value from context: 58,3%
@@ -237,7 +238,7 @@ Answer:
     system_prompt_with_schema = build_system_prompt(instruction, example, pydantic_schema)
 
 
-
+# 布尔类回答
 class AnswerWithRAGContextBooleanPrompt:
     instruction = AnswerWithRAGContextSharedPrompt.instruction
     user_prompt = AnswerWithRAGContextSharedPrompt.user_prompt
@@ -282,7 +283,7 @@ Answer:
     system_prompt_with_schema = build_system_prompt(instruction, example, pydantic_schema)
 
 
-
+# 列表类回答
 class AnswerWithRAGContextNamesPrompt:
     instruction = AnswerWithRAGContextSharedPrompt.instruction
     user_prompt = AnswerWithRAGContextSharedPrompt.user_prompt
@@ -341,7 +342,7 @@ Answer:
     system_prompt = build_system_prompt(instruction, example)
 
     system_prompt_with_schema = build_system_prompt(instruction, example, pydantic_schema)
-
+# 比较类回答
 class ComparativeAnswerPrompt:
     instruction = """
 You are a question answering system.
@@ -402,7 +403,7 @@ Answer:
     
     system_prompt_with_schema = build_system_prompt(instruction, example, pydantic_schema)
 
-
+# 格式修复模块
 class AnswerSchemaFixPrompt:
     system_prompt = """
 You are a JSON formatter.
@@ -427,7 +428,7 @@ Here is the LLM response that not following the schema and needs to be properly 
 
 
 
-
+# 重排序模块，使用 LLM 对文档块进行 0.0 到 1.0 的打分。
 class RerankingPrompt:
     system_prompt_rerank_single_block = """
 You are a RAG (Retrieval-Augmented Generation) retrievals ranker.
@@ -456,6 +457,9 @@ Instructions:
    - Objectivity: Evaluate block based only on their content relative to the query.
    - Clarity: Be clear and concise in your justifications.
    - No assumptions: Do not infer information beyond what's explicitly stated in the block.
+IMPORTANT OUTPUT RULES:
+1. You must output valid JSON.
+2. The root key of your JSON object MUST be exactly "block_rankings". Do NOT use "rankings" or any other name.
 """
 
     system_prompt_rerank_multiple_blocks = """
@@ -485,6 +489,9 @@ Instructions:
    - Objectivity: Evaluate blocks based only on their content relative to the query.
    - Clarity: Be clear and concise in your justifications.
    - No assumptions: Do not infer information beyond what's explicitly stated in the block.
+IMPORTANT OUTPUT RULES:
+1. You must output valid JSON.
+2. The root key of your JSON object MUST be exactly "block_rankings". Do NOT use "rankings" or any other name.
 """
 
 class RetrievalRankingSingleBlock(BaseModel):
@@ -495,5 +502,5 @@ class RetrievalRankingSingleBlock(BaseModel):
 class RetrievalRankingMultipleBlocks(BaseModel):
     """Rank retrieved multiple text blocks relevance to a query."""
     block_rankings: List[RetrievalRankingSingleBlock] = Field(
-        description="A list of text blocks and their associated relevance scores."
+        description="A list of text blocks and scores. IMPORTANT: The JSON key for this list MUST be 'block_rankings'."
     )

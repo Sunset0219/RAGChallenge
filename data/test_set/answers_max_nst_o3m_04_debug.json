@@ -1,0 +1,82 @@
+{
+  "questions": [
+    {
+      "question_text": "Did Mercia Asset Management PLC mention any mergers or acquisitions in the annual report?",
+      "kind": "boolean",
+      "value": null,
+      "references": [],
+      "error": "AttributeError: 'NoneType' object has no attribute 'beta'",
+      "answer_details": {
+        "$ref": "#/answer_details/0"
+      }
+    },
+    {
+      "question_text": "According to the annual report, what is the Operating margin (%) for Tradition (within the last period or at the end of the last period)? If data is not available, return 'N/A'.",
+      "kind": "number",
+      "value": null,
+      "references": [],
+      "error": "AttributeError: 'NoneType' object has no attribute 'beta'",
+      "answer_details": {
+        "$ref": "#/answer_details/1"
+      }
+    },
+    {
+      "question_text": "Did TSX_Y announce a share buyback plan in the annual report?",
+      "kind": "boolean",
+      "value": null,
+      "references": [],
+      "error": "AttributeError: 'NoneType' object has no attribute 'beta'",
+      "answer_details": {
+        "$ref": "#/answer_details/2"
+      }
+    },
+    {
+      "question_text": "What was the largest single spending of CrossFirst Bank on executive compensation in USD?",
+      "kind": "name",
+      "value": null,
+      "references": [],
+      "error": "AttributeError: 'NoneType' object has no attribute 'beta'",
+      "answer_details": {
+        "$ref": "#/answer_details/3"
+      }
+    },
+    {
+      "question_text": "Did Holley Inc. mention any mergers or acquisitions in the annual report?",
+      "kind": "boolean",
+      "value": null,
+      "references": [],
+      "error": "AttributeError: 'NoneType' object has no attribute 'beta'",
+      "answer_details": {
+        "$ref": "#/answer_details/4"
+      }
+    }
+  ],
+  "answer_details": [
+    {
+      "error_traceback": "Traceback (most recent call last):\n  File \"d:\\tudui\\rag_challenge\\rag-challenge-2\\src\\questions_processing.py\", line 305, in _process_single_question\n    answer_dict = self.process_question(question_text, schema)\n  File \"d:\\tudui\\rag_challenge\\rag-challenge-2\\src\\questions_processing.py\", line 210, in process_question\n    answer_dict = self.get_answer_for_company(company_name=company_name, question=question, schema=schema)\n  File \"d:\\tudui\\rag_challenge\\rag-challenge-2\\src\\questions_processing.py\", line 156, in get_answer_for_company\n    answer_dict = self.openai_processor.get_answer_from_rag_context(\n  File \"d:\\tudui\\rag_challenge\\rag-challenge-2\\src\\api_requests.py\", line 424, in get_answer_from_rag_context\n    answer_dict = self.processor.send_message(\n  File \"d:\\tudui\\rag_challenge\\rag-challenge-2\\src\\api_requests.py\", line 64, in send_message\n    completion = self.llm.beta.chat.completions.parse(**params)\nAttributeError: 'NoneType' object has no attribute 'beta'\n",
+      "self": "#/answer_details/0"
+    },
+    {
+      "error_traceback": "Traceback (most recent call last):\n  File \"d:\\tudui\\rag_challenge\\rag-challenge-2\\src\\questions_processing.py\", line 305, in _process_single_question\n    answer_dict = self.process_question(question_text, schema)\n  File \"d:\\tudui\\rag_challenge\\rag-challenge-2\\src\\questions_processing.py\", line 210, in process_question\n    answer_dict = self.get_answer_for_company(company_name=company_name, question=question, schema=schema)\n  File \"d:\\tudui\\rag_challenge\\rag-challenge-2\\src\\questions_processing.py\", line 156, in get_answer_for_company\n    answer_dict = self.openai_processor.get_answer_from_rag_context(\n  File \"d:\\tudui\\rag_challenge\\rag-challenge-2\\src\\api_requests.py\", line 424, in get_answer_from_rag_context\n    answer_dict = self.processor.send_message(\n  File \"d:\\tudui\\rag_challenge\\rag-challenge-2\\src\\api_requests.py\", line 64, in send_message\n    completion = self.llm.beta.chat.completions.parse(**params)\nAttributeError: 'NoneType' object has no attribute 'beta'\n",
+      "self": "#/answer_details/1"
+    },
+    {
+      "error_traceback": "Traceback (most recent call last):\n  File \"d:\\tudui\\rag_challenge\\rag-challenge-2\\src\\questions_processing.py\", line 305, in _process_single_question\n    answer_dict = self.process_question(question_text, schema)\n  File \"d:\\tudui\\rag_challenge\\rag-challenge-2\\src\\questions_processing.py\", line 210, in process_question\n    answer_dict = self.get_answer_for_company(company_name=company_name, question=question, schema=schema)\n  File \"d:\\tudui\\rag_challenge\\rag-challenge-2\\src\\questions_processing.py\", line 156, in get_answer_for_company\n    answer_dict = self.openai_processor.get_answer_from_rag_context(\n  File \"d:\\tudui\\rag_challenge\\rag-challenge-2\\src\\api_requests.py\", line 424, in get_answer_from_rag_context\n    answer_dict = self.processor.send_message(\n  File \"d:\\tudui\\rag_challenge\\rag-challenge-2\\src\\api_requests.py\", line 64, in send_message\n    completion = self.llm.beta.chat.completions.parse(**params)\nAttributeError: 'NoneType' object has no attribute 'beta'\n",
+      "self": "#/answer_details/2"
+    },
+    {
+      "error_traceback": "Traceback (most recent call last):\n  File \"d:\\tudui\\rag_challenge\\rag-challenge-2\\src\\questions_processing.py\", line 305, in _process_single_question\n    answer_dict = self.process_question(question_text, schema)\n  File \"d:\\tudui\\rag_challenge\\rag-challenge-2\\src\\questions_processing.py\", line 210, in process_question\n    answer_dict = self.get_answer_for_company(company_name=company_name, question=question, schema=schema)\n  File \"d:\\tudui\\rag_challenge\\rag-challenge-2\\src\\questions_processing.py\", line 156, in get_answer_for_company\n    answer_dict = self.openai_processor.get_answer_from_rag_context(\n  File \"d:\\tudui\\rag_challenge\\rag-challenge-2\\src\\api_requests.py\", line 424, in get_answer_from_rag_context\n    answer_dict = self.processor.send_message(\n  File \"d:\\tudui\\rag_challenge\\rag-challenge-2\\src\\api_requests.py\", line 64, in send_message\n    completion = self.llm.beta.chat.completions.parse(**params)\nAttributeError: 'NoneType' object has no attribute 'beta'\n",
+      "self": "#/answer_details/3"
+    },
+    {
+      "error_traceback": "Traceback (most recent call last):\n  File \"d:\\tudui\\rag_challenge\\rag-challenge-2\\src\\questions_processing.py\", line 305, in _process_single_question\n    answer_dict = self.process_question(question_text, schema)\n  File \"d:\\tudui\\rag_challenge\\rag-challenge-2\\src\\questions_processing.py\", line 210, in process_question\n    answer_dict = self.get_answer_for_company(company_name=company_name, question=question, schema=schema)\n  File \"d:\\tudui\\rag_challenge\\rag-challenge-2\\src\\questions_processing.py\", line 156, in get_answer_for_company\n    answer_dict = self.openai_processor.get_answer_from_rag_context(\n  File \"d:\\tudui\\rag_challenge\\rag-challenge-2\\src\\api_requests.py\", line 424, in get_answer_from_rag_context\n    answer_dict = self.processor.send_message(\n  File \"d:\\tudui\\rag_challenge\\rag-challenge-2\\src\\api_requests.py\", line 64, in send_message\n    completion = self.llm.beta.chat.completions.parse(**params)\nAttributeError: 'NoneType' object has no attribute 'beta'\n",
+      "self": "#/answer_details/4"
+    }
+  ],
+  "statistics": {
+    "total_questions": 5,
+    "error_count": 5,
+    "na_count": 0,
+    "success_count": 0
+  }
+}

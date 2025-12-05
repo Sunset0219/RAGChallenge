@@ -25,7 +25,7 @@ class PageTextPreparation:
         and saving them to an output directory if specified.
         """
         all_reports = []
-        
+        # 获取所有 json 文件
         if reports_dir:
             reports_paths = list(reports_dir.glob('*.json'))
         
@@ -34,9 +34,11 @@ class PageTextPreparation:
                 report_data = json.load(file)
             
             full_report_text = self.process_report(report_data)
+            # 组装新结构：保留元数据，替换内容为处理后的文本
             report = {"metainfo": report_data['metainfo'], "content": full_report_text}
             all_reports.append(report)
             
+            # 保存到输出目录 (通常是 debug_data/02_merged_reports)
             if output_dir:
                 output_dir.mkdir(parents=True, exist_ok=True)
                 with open(output_dir / report_path.name, 'w', encoding='utf-8') as file:
@@ -48,6 +50,8 @@ class PageTextPreparation:
         """
         Process a single report, returning a list of processed pages and printing a message if corrections were made.
         """
+
+        # 将原始数据保存在类实例中，方便其他方法调用
         self.report_data = report_data
         processed_pages = []
         total_corrections = 0
@@ -55,7 +59,9 @@ class PageTextPreparation:
 
         for page_content in self.report_data["content"]:
             page_number = page_content["page"]
+            # 将这一页的 Block 拼装成字符串
             page_text = self.prepare_page_text(page_number)
+            # 用正则修复乱码和特殊指令
             cleaned_text, corrections_count, corrections = self._clean_text(page_text)
             total_corrections += corrections_count
             corrections_list.extend(corrections)
@@ -71,7 +77,7 @@ class PageTextPreparation:
                 f"{self.report_data['metainfo']['sha1_name']}"
             )
             print(corrections_list[:30])
-        
+        # 还没进行分块，所以先chunks 暂时为空
         processed_report = {
             "chunks": None,
             "pages": processed_pages
@@ -80,14 +86,16 @@ class PageTextPreparation:
         return processed_report
 
     def prepare_page_text(self, page_number):
+        # 把一个个 JSON block 变成字符串的关键
         """Main method to process page blocks and return assembled string."""
         page_data = self._get_page_data(page_number)
         if not page_data or "content" not in page_data:
             return ""
 
         blocks = page_data["content"]
-
+        # 去掉不需要的块（比如页脚 footer、装饰性图片）
         filtered_blocks = self._filter_blocks(blocks)
+        #  格式化：应用排版规则（处理标题、把表格和它的标题/脚注粘在一起）
         final_blocks = self._apply_formatting_rules(filtered_blocks)
 
         if final_blocks:
@@ -98,6 +106,7 @@ class PageTextPreparation:
 
     def _get_page_data(self, page_number):
         """Returns page dict for given page number, or None if not found."""
+        # 根据页数返回页面内容
         all_pages = self.report_data.get("content", [])
         for page in all_pages:
             if page.get("page") == page_number:
@@ -105,6 +114,7 @@ class PageTextPreparation:
         return None
 
     def _filter_blocks(self, blocks):
+        # 去掉不需要的块（比如页脚 footer、装饰性图片）
         """Remove blocks of ignored types."""
         ignored_types = {"page_footer", "picture"}
         filtered_blocks = []
@@ -116,6 +126,8 @@ class PageTextPreparation:
         return filtered_blocks
     
     def _clean_text(self, text):
+        # 映射表：PDF 内部命令 -> 真实字符
+        # 有些 PDF 解析出来会是 "/zero" 而不是 "0"
         """Clean text using regex substitutions and count corrections."""
         command_mapping = {
             'zero': '0',
@@ -154,18 +166,18 @@ class PageTextPreparation:
         occurrences_amount += len(re.findall(r'/([A-Z])\.cap', text))
 
         corrections = []
-
+        # 定义替换逻辑：把 /zero 换成 0
         def replace_command(match):
             base_command = match.group(1)
             replacement = command_mapping.get(base_command)
             if replacement is not None:
                 corrections.append((match.group(0), replacement))
             return replacement if replacement is not None else match.group(0)
-
+        # 定义替换逻辑：直接删除 glyph 标记
         def replace_glyph(match):
             corrections.append((match.group(0), ''))
             return ''
-
+        # 定义替换逻辑：把 /A.cap 换成 A
         def replace_cap(match):
             original = match.group(0)
             replacement = match.group(1)
@@ -180,6 +192,7 @@ class PageTextPreparation:
     
     def _block_ends_with_colon(self, block):
         """Check if block text ends with colon for relevant block types."""
+        # 冒号结尾的段落
         block_type = block.get("type")
         text = block.get("text", "").rstrip()
         if block_type in {"text", "caption", "section_header", "paragraph"}:
@@ -187,7 +200,9 @@ class PageTextPreparation:
         return False
 
     def _apply_formatting_rules(self, blocks):
+        # 根据格式化规则转换块。
         """Transform blocks according to formatting rules."""
+        # # 预扫描：前3个块里有没有标题？用来决定标题层级
         page_header_in_first_3 = False
         section_header_in_first_3 = False
         for blk in blocks[:3]:
@@ -202,18 +217,21 @@ class PageTextPreparation:
         i = 0
         n = len(blocks)
 
+
         while i < n:
             block = blocks[i]
             block_type = block.get("type")
             text = block.get("text", "").strip()
 
+            # 处理页面标题 (Page Header)
             # Handle headers
             if block_type == "page_header":
+                # 如果在前3行，用一级标题 #，否则用二级 ##
                 prefix = "\n# " if i < 3 else "\n## "
                 final_blocks.append(f"{prefix}{text}\n")
                 i += 1
                 continue
-
+            # 处理章节标题 (Section Header)
             if block_type == "section_header":
                 first_section_header_index += 1
                 if (
@@ -227,10 +245,11 @@ class PageTextPreparation:
                 final_blocks.append(f"{prefix}{text}\n")
                 i += 1
                 continue
-
+            # 处理段落 (Paragraph)
             if block_type == "paragraph":
                 if self._block_ends_with_colon(block) and i + 1 < n:
                     next_block_type = blocks[i + 1].get("type")
+                    # 如果下面不是表格或列表，就把它当作三级标题 ###
                     if next_block_type not in ("table", "list_item"):
                         final_blocks.append(f"\n### {text}\n")
                         i += 1
@@ -239,8 +258,10 @@ class PageTextPreparation:
                     final_blocks.append(f"\n### {text}\n")
                     i += 1
                     continue
-
+            #  处理表格组 (Table Groups)
             # Handle table groups
+            # 目的是：把 "标题 + 表格 + 脚注" 绑在一起，不被切开
+            # 如果当前是 "Table 1:" 这种文本
             if block_type == "table" or (
                 self._block_ends_with_colon(block)
                 and i + 1 < n
@@ -248,18 +269,21 @@ class PageTextPreparation:
             ):
                 group_blocks = []
                 header_for_table = None
+                # 情况A：当前是标题，下一个是表格
                 if self._block_ends_with_colon(block) and i + 1 < n:
                     header_for_table = block
                     table_block = blocks[i + 1]
                     i += 2
                 else:
+                    # 情况B：当前就是表格
                     table_block = block
                     i += 1
-
+                
                 if header_for_table:
                     group_blocks.append(header_for_table)
                 group_blocks.append(table_block)
-
+                # 检查表格后面有没有跟“脚注”
+                # 先看是不是有一行文本紧接着脚注（有时脚注前有个星号文本）
                 footnote_candidates_start = i
                 if i < n:
                     maybe_text_block = blocks[i]
@@ -267,7 +291,7 @@ class PageTextPreparation:
                         if (i + 1 < n) and (blocks[i + 1].get("type") == "footnote"):
                             group_blocks.append(maybe_text_block)
                             i += 1
-
+                # 把所有连续的 footnote 都加进去
                 while i < n and blocks[i].get("type") == "footnote":
                     group_blocks.append(blocks[i])
                     i += 1
@@ -275,8 +299,9 @@ class PageTextPreparation:
                 group_text = self._render_table_group(group_blocks)
                 final_blocks.append(group_text)
                 continue
-
+            # 处理列表组 (List Groups)
             # Handle list groups
+            # 逻辑和表格组类似，把 "List Header + List Items + Footnotes" 绑在一起
             if block_type == "list_item" or (
                 self._block_ends_with_colon(block)
                 and i + 1 < n
@@ -304,7 +329,7 @@ class PageTextPreparation:
                 group_text = self._render_list_group(group_blocks)
                 final_blocks.append(group_text)
                 continue
-
+            # Rule 6: 处理普通文本
             # Handle normal blocks
             if block_type in (
                 "text",
@@ -327,18 +352,21 @@ class PageTextPreparation:
         return final_blocks
 
     def _render_table_group(self, group_blocks):
+        # 渲染表格组，包括标题、表格本身和脚注
         """Render table group with optional header, text and footnotes."""
         chunk = []
         for blk in group_blocks:
             blk_type = blk.get("type")
+            # 如果是文本类，直接添加
             blk_text = blk.get("text", "").strip()
             if blk_type in {"text", "caption", "section_header", "paragraph"}:
                 chunk.append(f"{blk_text}\n")
-
+            # 如果是表格，去查具体的 Markdown 内容
             elif blk_type == "table":
                 table_id = blk.get("table_id")
                 if table_id is None:
                     continue
+                # 【回查】根据 ID 去 report_data 里找之前解析好的 Markdown
                 table_markdown = self._get_table_by_id(table_id)
                 chunk.append(f"{table_markdown}\n")
 
@@ -361,7 +389,7 @@ class PageTextPreparation:
             blk_text = blk.get("text", "").strip()
             if blk_type in {"text", "caption", "section_header", "paragraph"}:
                 chunk.append(f"{blk_text}\n")
-
+            # 加个破折号变成 Markdown 列表
             elif blk_type == "list_item":
                 chunk.append(f"- {blk_text}\n")
 
@@ -382,6 +410,7 @@ class PageTextPreparation:
     def _get_table_by_id(self, table_id):
         """Get table representation by ID from report data.
         Returns markdown or serialized text based on configuration."""
+        # 根据 ID 获取表格内容（Markdown 或 Serialized）。
         for t in self.report_data.get("tables", []):
             if t.get("table_id") == table_id:
                 if self.use_serialized_tables:
@@ -412,25 +441,28 @@ class PageTextPreparation:
             return combined_text
 
     def export_to_markdown(self, reports_dir: Path, output_dir: Path):
+
         """Export processed reports to markdown files.
         
         Args:
             reports_dir: Directory containing JSON report files
             output_dir: Directory where markdown files will be saved
         """
+        """将处理后的报告导出为 .md 文件，方便人类阅读。"""
         output_dir.mkdir(parents=True, exist_ok=True)
-        
+        # 读取json
         for report_path in reports_dir.glob("*.json"):
             with open(report_path, 'r', encoding='utf-8') as f:
                 report_data = json.load(f)
-            
+            # 处理
             processed_report = self.process_report(report_data)
-            
+            # 拼接文档
             document_text = ""
             for page in processed_report['pages']:
+                # 加分割线
                 document_text += f"\n\n---\n\n# Page {page['page']}\n\n"
                 document_text += page['text']
-            
+            # 写入markdown文本
             report_name = report_data['metainfo']['sha1_name']
             with open(output_dir / f"{report_name}.md", "w", encoding="utf-8") as f:
                 f.write(document_text)

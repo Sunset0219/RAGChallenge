@@ -1,0 +1,19 @@
+{
+  "answers": [
+    {
+      "question_text": "Did Mercia Asset Management PLC mention any mergers or acquisitions in the annual report?",
+      "kind": "boolean",
+      "value": "N/A",
+      "references": []
+    },
+    {
+      "question_text": "According to the annual report, what is the Operating margin (%) for Tradition (within the last period or at the end of the last period)? If data is not available, return 'N/A'.",
+      "kind": "number",
+      "value": "N/A",
+      "references": []
+    }
+  ],
+  "team_email": "79250515615@yandex.com",
+  "submission_name": "Ilia_Ris vDB + SO CoT",
+  "details": "Deepseek RAG pipeline"
+}

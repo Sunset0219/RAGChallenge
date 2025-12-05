@@ -1,0 +1,94 @@
+{
+  "answers": [
+    {
+      "question_text": "Did Mercia Asset Management PLC mention any mergers or acquisitions in the annual report?",
+      "kind": "boolean",
+      "value": false,
+      "references": [
+        {
+          "pdf_sha1": "ac9aa244462c80705c3ff046542c02c459989742",
+          "page_index": 13
+        },
+        {
+          "pdf_sha1": "ac9aa244462c80705c3ff046542c02c459989742",
+          "page_index": 96
+        }
+      ],
+      "reasoning_process": "1. The question asks whether Mercia Asset Management PLC mentioned any mergers or acquisitions in its 2022 annual report.\n2. A merger typically involves combining with another company, while an acquisition refers to purchasing another company or its assets.\n3. Reviewing the provided context:\n   - Page 14 describes Mercia's hybrid investment model and mentions using proprietary capital to invest selectively in promising businesses within third-party funds, but this refers to venture-style investments, not acquisitions of companies as a whole.\n   - Page 97 details investment activity, including investments made, disposals, and loan repayments. These relate to portfolio-level activities (e.g., investing in or exiting from early-stage companies), not corporate mergers or acquisitions by Mercia itself.\n   - No section in the provided excerpts references Mercia acquiring another firm, merging with another entity, or being acquired.\n   - The financial statements and notes reflect organic growth and investment performance, with no line items or disclosures indicating business combinations or M&A activity.\n4. Therefore, there is no evidence in the provided excerpts that Mercia Asset Management PLC engaged in or announced any mergers or acquisitions during the reporting period."
+    },
+    {
+      "question_text": "According to the annual report, what is the Operating margin (%) for Tradition (within the last period or at the end of the last period)? If data is not available, return 'N/A'.",
+      "kind": "number",
+      "value": "N/A",
+      "references": [],
+      "reasoning_process": "1. **Metric Definition**: The question asks for the 'Operating margin (%)' for Tradition for the most recent period (i.e., fiscal year 2022). Operating margin is typically calculated as (Operating Income / Revenue) × 100.\n2. **Context Examination**: The provided excerpts include segment reporting (page 73), financial data on subsidiaries with non-controlling interests (pages 98–99), equity investments (page 136), shareholding details (page 141), market cap info (page 8), and general business model descriptions. However, none of these pages contain a consolidated income statement or a clear breakout of operating income and total revenue for the entire Compagnie Financière Tradition Group for 2022.\n3. **Revenue Data**: While revenue figures appear for subsidiaries like Tradition-ICAP and Tradition Energy (e.g., CHF 56,861k and CHF 57,938k respectively on page 98), these are not the consolidated group revenue. The report states these are 'before eliminating intercompany balances', and they only cover entities with significant non-controlling interests—not the whole company.\n4. **Operating Income Data**: There is no line item labeled 'Operating income', 'EBIT', or similar in any of the provided excerpts that would allow calculation of operating margin for the full group.\n5. **Segment Reporting**: Page 73 describes operating segments but does not provide numerical results (revenue or operating profit) by segment for 2022.\n6. **Conclusion**: Since neither consolidated revenue nor operating income for the entire Tradition group is available in the provided context, the operating margin cannot be computed or retrieved directly. Per instructions, if data is not available, the answer is 'N/A'."
+    },
+    {
+      "question_text": "Did TSX_Y announce a share buyback plan in the annual report?",
+      "kind": "boolean",
+      "value": true,
+      "references": [
+        {
+          "pdf_sha1": "9d7a72445aba6860402c3acce75af02dc045f74d",
+          "page_index": 18
+        },
+        {
+          "pdf_sha1": "9d7a72445aba6860402c3acce75af02dc045f74d",
+          "page_index": 19
+        },
+        {
+          "pdf_sha1": "9d7a72445aba6860402c3acce75af02dc045f74d",
+          "page_index": 67
+        }
+      ],
+      "reasoning_process": "1. The question asks whether TSX_Y (which appears to refer to Yellow Pages Limited, a TSX-listed company) announced a share buyback plan in its annual report.\n2. A 'share buyback plan' can take various forms, such as a Normal Course Issuer Bid (NCIB) or a Plan of Arrangement involving share repurchases.\n3. On page 20, under 'Share repurchase - Plan of Arrangement', it states: 'On August 4, 2022, the Board approved a distribution to shareholders of approximately $100.0 million by way of a share repurchase from all shareholders pursuant to a statutory arrangement...'\n4. Additionally, on page 19 and page 68, the company describes NCIBs (Normal Course Issuer Bids), which are standard share buyback programs in Canada. Specifically, an NCIB was announced on August 5, 2021, to purchase up to $16.0 million of shares, completed in May 2022.\n5. Both the Plan of Arrangement (a major one-time buyback) and the NCIB constitute formal share buyback plans announced and detailed in the annual report.\n6. Therefore, the company did announce at least one share buyback plan (in fact, multiple) in the annual report."
+    },
+    {
+      "question_text": "What was the largest single spending of CrossFirst Bank on executive compensation in USD?",
+      "kind": "name",
+      "value": null,
+      "references": [
+        {
+          "pdf_sha1": "e2b19d2cc2ccab2fd9022326b56b38fb0e772e73",
+          "page_index": 9
+        },
+        {
+          "pdf_sha1": "e2b19d2cc2ccab2fd9022326b56b38fb0e772e73",
+          "page_index": 64
+        }
+      ],
+      "reasoning_process": "1. The question asks for the largest single spending by CrossFirst Bank on executive compensation in USD.\n2. Executive compensation details are typically disclosed in the 'Executive Compensation' section of a company's annual report (Item 11 in Form 10-K).\n3. However, the provided context does not include the content of Item 11 ('Executive Compensation'), which is referenced on page 10 as starting on page 105.\n4. The available pages include financial statements (e.g., Consolidated Statements of Operations on page 65), executive officer listings (page 35), and exhibit lists (page 113), but none contain a detailed breakdown of individual executive compensation amounts.\n5. Page 65 shows 'Salaries and employee benefits' totaling $75,288,000 for 2022, but this is a consolidated expense line item covering all employees, not a single executive.\n6. Employment agreements for executives (e.g., Mike Maddox, Benjamin Clouse, etc.) are listed in exhibits (page 113), but the actual compensation figures from those agreements are not included in the provided text.\n7. Without access to the 'Executive Compensation' section (Item 11) or specific proxy statement data referenced therein, it is impossible to determine the largest single executive compensation amount.\n8. Therefore, the requested information is not present in the provided context."
+    },
+    {
+      "question_text": "Did Holley Inc. mention any mergers or acquisitions in the annual report?",
+      "kind": "boolean",
+      "value": true,
+      "references": [
+        {
+          "pdf_sha1": "194000c9109c6fa628f1fed33b44ae4c2b8365f4",
+          "page_index": 32
+        },
+        {
+          "pdf_sha1": "194000c9109c6fa628f1fed33b44ae4c2b8365f4",
+          "page_index": 33
+        },
+        {
+          "pdf_sha1": "194000c9109c6fa628f1fed33b44ae4c2b8365f4",
+          "page_index": 53
+        },
+        {
+          "pdf_sha1": "194000c9109c6fa628f1fed33b44ae4c2b8365f4",
+          "page_index": 54
+        },
+        {
+          "pdf_sha1": "194000c9109c6fa628f1fed33b44ae4c2b8365f4",
+          "page_index": 62
+        }
+      ],
+      "reasoning_process": "1. The question asks whether Holley Inc. mentioned any mergers or acquisitions in its annual report.\n2. Reviewing the provided context, multiple pages explicitly discuss mergers and acquisitions.\n3. Page 63 details a major 'Business Combination' completed on July 16, 2021, involving Empower Ltd. and Holley Intermediate Holdings, Inc., which resulted in Holley becoming a publicly traded company under the ticker 'HLLY.' This qualifies as a merger.\n4. Page 34 lists 15 acquisitions completed between 2020 and 2022, including specific companies like Baer, Inc., Brothers Mail Order Industries, Inc., Advance Engine Management Inc., Simpson Performance Products, and Drake Automotive Group.\n5. Page 33 reiterates the Business Combination and describes it as a reverse recapitalization.\n6. Pages 54 and 55 include financial impacts of these transactions, such as issuance of shares, earn-out liabilities, and cash paid for acquisitions.\n7. Therefore, the annual report clearly mentions both mergers (via the Business Combination) and multiple acquisitions."
+    }
+  ],
+  "team_email": "79250515615@yandex.com",
+  "submission_name": "Ilia_Ris vDB + SO CoT",
+  "details": "Qwen3Max RAG pipeline"
+}

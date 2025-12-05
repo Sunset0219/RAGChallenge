@@ -1,0 +1,82 @@
+{
+  "questions": [
+    {
+      "question_text": "Did Mercia Asset Management PLC mention any mergers or acquisitions in the annual report?",
+      "kind": "boolean",
+      "value": null,
+      "references": [],
+      "error": "NotFoundError: Error code: 404 - {'error': {'message': 'The model `text-embedding-3-large` does not exist or you do not have access to it.', 'type': 'invalid_request_error', 'param': None, 'code': 'model_not_found'}, 'request_id': 'c3e16283-f459-4d3f-b147-e367947946ad'}",
+      "answer_details": {
+        "$ref": "#/answer_details/0"
+      }
+    },
+    {
+      "question_text": "According to the annual report, what is the Operating margin (%) for Tradition (within the last period or at the end of the last period)? If data is not available, return 'N/A'.",
+      "kind": "number",
+      "value": null,
+      "references": [],
+      "error": "NotFoundError: Error code: 404 - {'error': {'message': 'The model `text-embedding-3-large` does not exist or you do not have access to it.', 'type': 'invalid_request_error', 'param': None, 'code': 'model_not_found'}, 'request_id': '39525c69-2dc1-45aa-b302-b7fb6144be40'}",
+      "answer_details": {
+        "$ref": "#/answer_details/1"
+      }
+    },
+    {
+      "question_text": "Did TSX_Y announce a share buyback plan in the annual report?",
+      "kind": "boolean",
+      "value": null,
+      "references": [],
+      "error": "NotFoundError: Error code: 404 - {'error': {'message': 'The model `text-embedding-3-large` does not exist or you do not have access to it.', 'type': 'invalid_request_error', 'param': None, 'code': 'model_not_found'}, 'request_id': 'a55ed528-9be0-4b45-a766-d63fb45d5f9b'}",
+      "answer_details": {
+        "$ref": "#/answer_details/2"
+      }
+    },
+    {
+      "question_text": "What was the largest single spending of CrossFirst Bank on executive compensation in USD?",
+      "kind": "name",
+      "value": null,
+      "references": [],
+      "error": "NotFoundError: Error code: 404 - {'error': {'message': 'The model `text-embedding-3-large` does not exist or you do not have access to it.', 'type': 'invalid_request_error', 'param': None, 'code': 'model_not_found'}, 'request_id': '215c5c9f-7f21-49b6-be57-ffba51c2314a'}",
+      "answer_details": {
+        "$ref": "#/answer_details/3"
+      }
+    },
+    {
+      "question_text": "Did Holley Inc. mention any mergers or acquisitions in the annual report?",
+      "kind": "boolean",
+      "value": null,
+      "references": [],
+      "error": "NotFoundError: Error code: 404 - {'error': {'message': 'The model `text-embedding-3-large` does not exist or you do not have access to it.', 'type': 'invalid_request_error', 'param': None, 'code': 'model_not_found'}, 'request_id': '666b69ae-0739-428c-9d78-90c7b866bc16'}",
+      "answer_details": {
+        "$ref": "#/answer_details/4"
+      }
+    }
+  ],
+  "answer_details": [
+    {
+      "error_traceback": "Traceback (most recent call last):\n  File \"d:\\tudui\\rag_challenge\\rag-challenge-2\\src\\questions_processing.py\", line 305, in _process_single_question\n    answer_dict = self.process_question(question_text, schema)\n  File \"d:\\tudui\\rag_challenge\\rag-challenge-2\\src\\questions_processing.py\", line 210, in process_question\n    answer_dict = self.get_answer_for_company(company_name=company_name, question=question, schema=schema)\n  File \"d:\\tudui\\rag_challenge\\rag-challenge-2\\src\\questions_processing.py\", line 143, in get_answer_for_company\n    retrieval_results = retriever.retrieve_by_company_name(\n  File \"d:\\tudui\\rag_challenge\\rag-challenge-2\\src\\retrieval.py\", line 294, in retrieve_by_company_name\n    vector_results = self.vector_retriever.retrieve_by_company_name(\n  File \"d:\\tudui\\rag_challenge\\rag-challenge-2\\src\\retrieval.py\", line 192, in retrieve_by_company_name\n    embedding = self.llm.embeddings.create(\n  File \"D:\\tudui\\rag_challenge\\RAG-Challenge-2\\venv\\lib\\site-packages\\openai\\resources\\embeddings.py\", line 124, in create\n    return self._post(\n  File \"D:\\tudui\\rag_challenge\\RAG-Challenge-2\\venv\\lib\\site-packages\\openai\\_base_client.py\", line 1277, in post\n    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))\n  File \"D:\\tudui\\rag_challenge\\RAG-Challenge-2\\venv\\lib\\site-packages\\openai\\_base_client.py\", line 954, in request\n    return self._request(\n  File \"D:\\tudui\\rag_challenge\\RAG-Challenge-2\\venv\\lib\\site-packages\\openai\\_base_client.py\", line 1058, in _request\n    raise self._make_status_error_from_response(err.response) from None\nopenai.NotFoundError: Error code: 404 - {'error': {'message': 'The model `text-embedding-3-large` does not exist or you do not have access to it.', 'type': 'invalid_request_error', 'param': None, 'code': 'model_not_found'}, 'request_id': 'c3e16283-f459-4d3f-b147-e367947946ad'}\n",
+      "self": "#/answer_details/0"
+    },
+    {
+      "error_traceback": "Traceback (most recent call last):\n  File \"d:\\tudui\\rag_challenge\\rag-challenge-2\\src\\questions_processing.py\", line 305, in _process_single_question\n    answer_dict = self.process_question(question_text, schema)\n  File \"d:\\tudui\\rag_challenge\\rag-challenge-2\\src\\questions_processing.py\", line 210, in process_question\n    answer_dict = self.get_answer_for_company(company_name=company_name, question=question, schema=schema)\n  File \"d:\\tudui\\rag_challenge\\rag-challenge-2\\src\\questions_processing.py\", line 143, in get_answer_for_company\n    retrieval_results = retriever.retrieve_by_company_name(\n  File \"d:\\tudui\\rag_challenge\\rag-challenge-2\\src\\retrieval.py\", line 294, in retrieve_by_company_name\n    vector_results = self.vector_retriever.retrieve_by_company_name(\n  File \"d:\\tudui\\rag_challenge\\rag-challenge-2\\src\\retrieval.py\", line 192, in retrieve_by_company_name\n    embedding = self.llm.embeddings.create(\n  File \"D:\\tudui\\rag_challenge\\RAG-Challenge-2\\venv\\lib\\site-packages\\openai\\resources\\embeddings.py\", line 124, in create\n    return self._post(\n  File \"D:\\tudui\\rag_challenge\\RAG-Challenge-2\\venv\\lib\\site-packages\\openai\\_base_client.py\", line 1277, in post\n    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))\n  File \"D:\\tudui\\rag_challenge\\RAG-Challenge-2\\venv\\lib\\site-packages\\openai\\_base_client.py\", line 954, in request\n    return self._request(\n  File \"D:\\tudui\\rag_challenge\\RAG-Challenge-2\\venv\\lib\\site-packages\\openai\\_base_client.py\", line 1058, in _request\n    raise self._make_status_error_from_response(err.response) from None\nopenai.NotFoundError: Error code: 404 - {'error': {'message': 'The model `text-embedding-3-large` does not exist or you do not have access to it.', 'type': 'invalid_request_error', 'param': None, 'code': 'model_not_found'}, 'request_id': '39525c69-2dc1-45aa-b302-b7fb6144be40'}\n",
+      "self": "#/answer_details/1"
+    },
+    {
+      "error_traceback": "Traceback (most recent call last):\n  File \"d:\\tudui\\rag_challenge\\rag-challenge-2\\src\\questions_processing.py\", line 305, in _process_single_question\n    answer_dict = self.process_question(question_text, schema)\n  File \"d:\\tudui\\rag_challenge\\rag-challenge-2\\src\\questions_processing.py\", line 210, in process_question\n    answer_dict = self.get_answer_for_company(company_name=company_name, question=question, schema=schema)\n  File \"d:\\tudui\\rag_challenge\\rag-challenge-2\\src\\questions_processing.py\", line 143, in get_answer_for_company\n    retrieval_results = retriever.retrieve_by_company_name(\n  File \"d:\\tudui\\rag_challenge\\rag-challenge-2\\src\\retrieval.py\", line 294, in retrieve_by_company_name\n    vector_results = self.vector_retriever.retrieve_by_company_name(\n  File \"d:\\tudui\\rag_challenge\\rag-challenge-2\\src\\retrieval.py\", line 192, in retrieve_by_company_name\n    embedding = self.llm.embeddings.create(\n  File \"D:\\tudui\\rag_challenge\\RAG-Challenge-2\\venv\\lib\\site-packages\\openai\\resources\\embeddings.py\", line 124, in create\n    return self._post(\n  File \"D:\\tudui\\rag_challenge\\RAG-Challenge-2\\venv\\lib\\site-packages\\openai\\_base_client.py\", line 1277, in post\n    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))\n  File \"D:\\tudui\\rag_challenge\\RAG-Challenge-2\\venv\\lib\\site-packages\\openai\\_base_client.py\", line 954, in request\n    return self._request(\n  File \"D:\\tudui\\rag_challenge\\RAG-Challenge-2\\venv\\lib\\site-packages\\openai\\_base_client.py\", line 1058, in _request\n    raise self._make_status_error_from_response(err.response) from None\nopenai.NotFoundError: Error code: 404 - {'error': {'message': 'The model `text-embedding-3-large` does not exist or you do not have access to it.', 'type': 'invalid_request_error', 'param': None, 'code': 'model_not_found'}, 'request_id': 'a55ed528-9be0-4b45-a766-d63fb45d5f9b'}\n",
+      "self": "#/answer_details/2"
+    },
+    {
+      "error_traceback": "Traceback (most recent call last):\n  File \"d:\\tudui\\rag_challenge\\rag-challenge-2\\src\\questions_processing.py\", line 305, in _process_single_question\n    answer_dict = self.process_question(question_text, schema)\n  File \"d:\\tudui\\rag_challenge\\rag-challenge-2\\src\\questions_processing.py\", line 210, in process_question\n    answer_dict = self.get_answer_for_company(company_name=company_name, question=question, schema=schema)\n  File \"d:\\tudui\\rag_challenge\\rag-challenge-2\\src\\questions_processing.py\", line 143, in get_answer_for_company\n    retrieval_results = retriever.retrieve_by_company_name(\n  File \"d:\\tudui\\rag_challenge\\rag-challenge-2\\src\\retrieval.py\", line 294, in retrieve_by_company_name\n    vector_results = self.vector_retriever.retrieve_by_company_name(\n  File \"d:\\tudui\\rag_challenge\\rag-challenge-2\\src\\retrieval.py\", line 192, in retrieve_by_company_name\n    embedding = self.llm.embeddings.create(\n  File \"D:\\tudui\\rag_challenge\\RAG-Challenge-2\\venv\\lib\\site-packages\\openai\\resources\\embeddings.py\", line 124, in create\n    return self._post(\n  File \"D:\\tudui\\rag_challenge\\RAG-Challenge-2\\venv\\lib\\site-packages\\openai\\_base_client.py\", line 1277, in post\n    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))\n  File \"D:\\tudui\\rag_challenge\\RAG-Challenge-2\\venv\\lib\\site-packages\\openai\\_base_client.py\", line 954, in request\n    return self._request(\n  File \"D:\\tudui\\rag_challenge\\RAG-Challenge-2\\venv\\lib\\site-packages\\openai\\_base_client.py\", line 1058, in _request\n    raise self._make_status_error_from_response(err.response) from None\nopenai.NotFoundError: Error code: 404 - {'error': {'message': 'The model `text-embedding-3-large` does not exist or you do not have access to it.', 'type': 'invalid_request_error', 'param': None, 'code': 'model_not_found'}, 'request_id': '215c5c9f-7f21-49b6-be57-ffba51c2314a'}\n",
+      "self": "#/answer_details/3"
+    },
+    {
+      "error_traceback": "Traceback (most recent call last):\n  File \"d:\\tudui\\rag_challenge\\rag-challenge-2\\src\\questions_processing.py\", line 305, in _process_single_question\n    answer_dict = self.process_question(question_text, schema)\n  File \"d:\\tudui\\rag_challenge\\rag-challenge-2\\src\\questions_processing.py\", line 210, in process_question\n    answer_dict = self.get_answer_for_company(company_name=company_name, question=question, schema=schema)\n  File \"d:\\tudui\\rag_challenge\\rag-challenge-2\\src\\questions_processing.py\", line 143, in get_answer_for_company\n    retrieval_results = retriever.retrieve_by_company_name(\n  File \"d:\\tudui\\rag_challenge\\rag-challenge-2\\src\\retrieval.py\", line 294, in retrieve_by_company_name\n    vector_results = self.vector_retriever.retrieve_by_company_name(\n  File \"d:\\tudui\\rag_challenge\\rag-challenge-2\\src\\retrieval.py\", line 192, in retrieve_by_company_name\n    embedding = self.llm.embeddings.create(\n  File \"D:\\tudui\\rag_challenge\\RAG-Challenge-2\\venv\\lib\\site-packages\\openai\\resources\\embeddings.py\", line 124, in create\n    return self._post(\n  File \"D:\\tudui\\rag_challenge\\RAG-Challenge-2\\venv\\lib\\site-packages\\openai\\_base_client.py\", line 1277, in post\n    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))\n  File \"D:\\tudui\\rag_challenge\\RAG-Challenge-2\\venv\\lib\\site-packages\\openai\\_base_client.py\", line 954, in request\n    return self._request(\n  File \"D:\\tudui\\rag_challenge\\RAG-Challenge-2\\venv\\lib\\site-packages\\openai\\_base_client.py\", line 1058, in _request\n    raise self._make_status_error_from_response(err.response) from None\nopenai.NotFoundError: Error code: 404 - {'error': {'message': 'The model `text-embedding-3-large` does not exist or you do not have access to it.', 'type': 'invalid_request_error', 'param': None, 'code': 'model_not_found'}, 'request_id': '666b69ae-0739-428c-9d78-90c7b866bc16'}\n",
+      "self": "#/answer_details/4"
+    }
+  ],
+  "statistics": {
+    "total_questions": 5,
+    "error_count": 5,
+    "na_count": 0,
+    "success_count": 0
+  }
+}

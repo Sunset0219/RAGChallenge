@@ -17,12 +17,14 @@ class BM25Retriever:
     def __init__(self, bm25_db_dir: Path, documents_dir: Path):
         self.bm25_db_dir = bm25_db_dir
         self.documents_dir = documents_dir
-        
+    # 根据公司名称检索，根据文本索引检索
     def retrieve_by_company_name(self, company_name: str, query: str, top_n: int = 3, return_parent_pages: bool = False) -> List[Dict]:
         document_path = None
+        # 确定公司文档位置
         for path in self.documents_dir.glob("*.json"):
             with open(path, 'r', encoding='utf-8') as f:
                 doc = json.load(f)
+                 # 找到元数据中公司名匹配的文档
                 if doc["metainfo"]["company_name"] == company_name:
                     document_path = path
                     document = doc
@@ -32,20 +34,25 @@ class BM25Retriever:
             raise ValueError(f"No report found with '{company_name}' company name.")
             
         # Load corresponding BM25 index
+        # 加载BM25索引
         bm25_path = self.bm25_db_dir / f"{document['metainfo']['sha1_name']}.pkl"
         with open(bm25_path, 'rb') as f:
             bm25_index = pickle.load(f)
             
         # Get the document content and BM25 index
+        # 获取文档的切片(chunks)和页面(pages)数据
         document = document
         chunks = document["content"]["chunks"]
         pages = document["content"]["pages"]
         
         # Get BM25 scores for the query
+        # 对查询语句分词（简单的空格分词）并获取 BM25 分数
         tokenized_query = query.split()
         scores = bm25_index.get_scores(tokenized_query)
         
+        #  确定实际返回的数量（防止请求数大于总数）
         actual_top_n = min(top_n, len(scores))
+        # 获取分数最高的索引，从高到低排序
         top_indices = sorted(range(len(scores)), key=lambda i: scores[i], reverse=True)[:actual_top_n]
         
         retrieval_results = []
@@ -53,9 +60,11 @@ class BM25Retriever:
         
         for index in top_indices:
             score = round(float(scores[index]), 4)
+            # 获取对应的文本块
             chunk = chunks[index]
+             # 找到该块所属的整页内容
             parent_page = next(page for page in pages if page["page"] == chunk["page"])
-            
+            # 如果要求返回整页，且该页未被处理过
             if return_parent_pages:
                 if parent_page["page"] not in seen_pages:
                     seen_pages.add(parent_page["page"])
@@ -86,8 +95,10 @@ class VectorRetriever:
 
     def _set_up_llm(self):
         load_dotenv()
+        # 使用qwen Embedding模型
         llm = OpenAI(
-            api_key=os.getenv("OPENAI_API_KEY"),
+            api_key="sk-734641e3a00b41d3b2b4e6f6a82c83d3",
+            base_url="https://dashscope.aliyuncs.com/compatible-mode/v1",
             timeout=None,
             max_retries=2
             )
@@ -97,13 +108,15 @@ class VectorRetriever:
     def set_up_llm():
         load_dotenv()
         llm = OpenAI(
-            api_key=os.getenv("OPENAI_API_KEY"),
+            api_key="sk-734641e3a00b41d3b2b4e6f6a82c83d3",
+            base_url="https://dashscope.aliyuncs.com/compatible-mode/v1",
             timeout=None,
             max_retries=2
             )
         return llm
 
     def _load_dbs(self):
+        # 加载向量索引，以及数据库，将 JSON 文档和对应的 .faiss 向量索引文件配对并加载到内存中
         all_dbs = []
         # Get list of JSON document paths
         all_documents_paths = list(self.documents_dir.glob('*.json'))
@@ -142,8 +155,9 @@ class VectorRetriever:
 
     @staticmethod
     def get_strings_cosine_similarity(str1, str2):
+        # 两个字符串的cos ，计算相似度
         llm = VectorRetriever.set_up_llm()
-        embeddings = llm.embeddings.create(input=[str1, str2], model="text-embedding-3-large")
+        embeddings = llm.embeddings.create(input=[str1, str2], model="text-embedding-v4")
         embedding1 = embeddings.data[0].embedding
         embedding2 = embeddings.data[1].embedding
         similarity_score = np.dot(embedding1, embedding2) / (np.linalg.norm(embedding1) * np.linalg.norm(embedding2))
@@ -151,7 +165,9 @@ class VectorRetriever:
         return similarity_score
 
     def retrieve_by_company_name(self, company_name: str, query: str, llm_reranking_sample_size: int = None, top_n: int = 3, return_parent_pages: bool = False) -> List[Tuple[str, float]]:
+        
         target_report = None
+        # 在内存中查找相应的报告
         for report in self.all_dbs:
             document = report.get("document", {})
             metainfo = document.get("metainfo")
@@ -172,22 +188,26 @@ class VectorRetriever:
         pages = document["content"]["pages"]
         
         actual_top_n = min(top_n, len(chunks))
-        
+        # 将查询语句转化为向量
         embedding = self.llm.embeddings.create(
             input=query,
-            model="text-embedding-3-large"
+            model="text-embedding-v4"
         )
+        # 转换为 numpy 数组并重塑形状以适配 FAISS 输入
         embedding = embedding.data[0].embedding
         embedding_array = np.array(embedding, dtype=np.float32).reshape(1, -1)
+        # 在向量数据库中query相似的topn，distances 是距离值，indices 是对应的索引ID
         distances, indices = vector_db.search(x=embedding_array, k=actual_top_n)
     
         retrieval_results = []
         seen_pages = set()
-        
+        # 遍历搜索结果
         for distance, index in zip(distances[0], indices[0]):
             distance = round(float(distance), 4)
             chunk = chunks[index]
+            # 根据索引找回原文切片
             parent_page = next(page for page in pages if page["page"] == chunk["page"])
+            # 页面去重
             if return_parent_pages:
                 if parent_page["page"] not in seen_pages:
                     seen_pages.add(parent_page["page"])
@@ -206,7 +226,7 @@ class VectorRetriever:
                 retrieval_results.append(result)
             
         return retrieval_results
-
+    # 暴力检索，给出所有本公司的页面
     def retrieve_all(self, company_name: str) -> List[Dict]:
         target_report = None
         for report in self.all_dbs:
@@ -238,6 +258,7 @@ class VectorRetriever:
 
 
 class HybridRetriever:
+    # 混合检索：向量检索和llm reranking
     def __init__(self, vector_db_dir: Path, documents_dir: Path):
         self.vector_retriever = VectorRetriever(vector_db_dir, documents_dir)
         self.reranker = LLMReranker()
@@ -267,7 +288,9 @@ class HybridRetriever:
         Returns:
             List of reranked document dictionaries with scores
         """
+
         # Get initial results from vector retriever
+        # 第一步：先使用向量检索获取较大的候选集 
         vector_results = self.vector_retriever.retrieve_by_company_name(
             company_name=company_name,
             query=query,
@@ -276,11 +299,12 @@ class HybridRetriever:
         )
         
         # Rerank results using LLM
+        # 使用LLM对候选数据集进行重排序
         reranked_results = self.reranker.rerank_documents(
             query=query,
             documents=vector_results,
             documents_batch_size=documents_batch_size,
             llm_weight=llm_weight
         )
-        
+        # 返回混合结果的topn
         return reranked_results[:top_n]

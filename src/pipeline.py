@@ -58,7 +58,7 @@ class RunConfig:
     submission_file: bool = True
     full_context: bool = False
     api_provider: str = "openai"
-    answering_model: str = "gpt-4o-mini-2024-07-18" #or "gpt-4o-2024-08-06"
+    answering_model: str = "qwen3-max" #or "gpt-4o-2024-08-06"
     config_suffix: str = ""
 
 class Pipeline:
@@ -442,14 +442,37 @@ configs = {"base": base_config,
            "ibm_llama8b": ibm_llama8b_config, # This one won't work, because ibm api was avaliable only while contest was running
            "gemini_thinking": gemini_thinking_config}
 
+qwen_config = RunConfig(
+    use_serialized_tables= False,
+    parent_document_retrieval= True,
+    llm_reranking=True,
 
+    parallel_requests= 1,
+    submission_file="My Qwen",
+    pipeline_details="Qwen3Max RAG pipeline",
+    api_provider="qwen",
+    answering_model="qwen3-max",
+    config_suffix="_qwen"
+)
+deepseek_config = RunConfig(
+    use_serialized_tables= False,
+    parent_document_retrieval= True,
+    llm_reranking=True,
+
+    parallel_requests= 3,
+    submission_file="My deepseek",
+    pipeline_details="Deepseek RAG pipeline",
+    api_provider="deepseek",
+    answering_model="deepseek-chat",
+    config_suffix="_deepseek"
+)
 # You can run any method right from this file with 
 # python .\src\pipeline.py
 # Just uncomment the method you want to run
 # You can also change the run_config to try out different configurations
 if __name__ == "__main__":
     root_path = here() / "data" / "test_set"
-    pipeline = Pipeline(root_path, run_config=max_nst_o3m_config)
+    pipeline = Pipeline(root_path, run_config=deepseek_config)
     
     
     # This method parses pdf reports into a jsons. It creates jsons in the debug/data_01_parsed_reports. These jsons used in the next steps. 
@@ -480,8 +503,10 @@ if __name__ == "__main__":
     # This method creates vector databases from the chunked reports
     # New files can be found in databases/vector_dbs
     # pipeline.create_vector_dbs() 
-    
+
+    # 创建bm25的数据库检索器
+    # pipeline.create_bm25_db()
     
     # This method processes the questions and answers
     # Questions processing logic depends on the run_config
-    # pipeline.process_questions() 
+    pipeline.process_questions() 

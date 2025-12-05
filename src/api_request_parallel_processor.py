@@ -72,7 +72,7 @@ The script is structured as follows:
         - task_id_generator_function (yields 0, 1, 2, ...)
     - Run main()
 """
-
+# OpenAI API 并发请求处理器
 # imports
 import aiohttp  # for making API calls concurrently
 import argparse  # for running script from command line

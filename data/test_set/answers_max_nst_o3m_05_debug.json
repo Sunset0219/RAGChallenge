@@ -1,0 +1,82 @@
+{
+  "questions": [
+    {
+      "question_text": "Did Mercia Asset Management PLC mention any mergers or acquisitions in the annual report?",
+      "kind": "boolean",
+      "value": null,
+      "references": [],
+      "error": "PermissionDeniedError: Error code: 403 - {'error': {'message': 'Access denied. For details, see: https://help.aliyun.com/zh/model-studio/error-code#access-denied', 'type': 'access_denied', 'param': None, 'code': 'access_denied'}, 'request_id': 'd467e6de-4ed6-4826-b88e-61d0f4eef1e1'}",
+      "answer_details": {
+        "$ref": "#/answer_details/0"
+      }
+    },
+    {
+      "question_text": "According to the annual report, what is the Operating margin (%) for Tradition (within the last period or at the end of the last period)? If data is not available, return 'N/A'.",
+      "kind": "number",
+      "value": null,
+      "references": [],
+      "error": "PermissionDeniedError: Error code: 403 - {'error': {'message': 'Access denied. For details, see: https://help.aliyun.com/zh/model-studio/error-code#access-denied', 'type': 'access_denied', 'param': None, 'code': 'access_denied'}, 'request_id': 'b1f962ad-537e-4f8c-ba89-475bef69171c'}",
+      "answer_details": {
+        "$ref": "#/answer_details/1"
+      }
+    },
+    {
+      "question_text": "Did TSX_Y announce a share buyback plan in the annual report?",
+      "kind": "boolean",
+      "value": null,
+      "references": [],
+      "error": "PermissionDeniedError: Error code: 403 - {'error': {'message': 'Access denied. For details, see: https://help.aliyun.com/zh/model-studio/error-code#access-denied', 'type': 'access_denied', 'param': None, 'code': 'access_denied'}, 'request_id': '4972137f-4be1-49cc-8cc7-5bae72fc3af3'}",
+      "answer_details": {
+        "$ref": "#/answer_details/2"
+      }
+    },
+    {
+      "question_text": "What was the largest single spending of CrossFirst Bank on executive compensation in USD?",
+      "kind": "name",
+      "value": null,
+      "references": [],
+      "error": "PermissionDeniedError: Error code: 403 - {'error': {'message': 'Access denied. For details, see: https://help.aliyun.com/zh/model-studio/error-code#access-denied', 'type': 'access_denied', 'param': None, 'code': 'access_denied'}, 'request_id': '7b3ee85e-305b-4f33-b951-2c39f7961c33'}",
+      "answer_details": {
+        "$ref": "#/answer_details/3"
+      }
+    },
+    {
+      "question_text": "Did Holley Inc. mention any mergers or acquisitions in the annual report?",
+      "kind": "boolean",
+      "value": null,
+      "references": [],
+      "error": "PermissionDeniedError: Error code: 403 - {'error': {'message': 'Access denied. For details, see: https://help.aliyun.com/zh/model-studio/error-code#access-denied', 'type': 'access_denied', 'param': None, 'code': 'access_denied'}, 'request_id': 'b6957f94-d4e0-41cd-a209-5ba36b1f948d'}",
+      "answer_details": {
+        "$ref": "#/answer_details/4"
+      }
+    }
+  ],
+  "answer_details": [
+    {
+      "error_traceback": "Traceback (most recent call last):\n  File \"d:\\tudui\\rag_challenge\\rag-challenge-2\\src\\questions_processing.py\", line 305, in _process_single_question\n    answer_dict = self.process_question(question_text, schema)\n  File \"d:\\tudui\\rag_challenge\\rag-challenge-2\\src\\questions_processing.py\", line 210, in process_question\n    answer_dict = self.get_answer_for_company(company_name=company_name, question=question, schema=schema)\n  File \"d:\\tudui\\rag_challenge\\rag-challenge-2\\src\\questions_processing.py\", line 156, in get_answer_for_company\n    answer_dict = self.openai_processor.get_answer_from_rag_context(\n  File \"d:\\tudui\\rag_challenge\\rag-challenge-2\\src\\api_requests.py\", line 425, in get_answer_from_rag_context\n    answer_dict = self.processor.send_message(\n  File \"d:\\tudui\\rag_challenge\\rag-challenge-2\\src\\api_requests.py\", line 65, in send_message\n    completion = self.llm.beta.chat.completions.parse(**params)\n  File \"D:\\tudui\\rag_challenge\\RAG-Challenge-2\\venv\\lib\\site-packages\\openai\\resources\\beta\\chat\\completions.py\", line 150, in parse\n    return self._post(\n  File \"D:\\tudui\\rag_challenge\\RAG-Challenge-2\\venv\\lib\\site-packages\\openai\\_base_client.py\", line 1277, in post\n    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))\n  File \"D:\\tudui\\rag_challenge\\RAG-Challenge-2\\venv\\lib\\site-packages\\openai\\_base_client.py\", line 954, in request\n    return self._request(\n  File \"D:\\tudui\\rag_challenge\\RAG-Challenge-2\\venv\\lib\\site-packages\\openai\\_base_client.py\", line 1058, in _request\n    raise self._make_status_error_from_response(err.response) from None\nopenai.PermissionDeniedError: Error code: 403 - {'error': {'message': 'Access denied. For details, see: https://help.aliyun.com/zh/model-studio/error-code#access-denied', 'type': 'access_denied', 'param': None, 'code': 'access_denied'}, 'request_id': 'd467e6de-4ed6-4826-b88e-61d0f4eef1e1'}\n",
+      "self": "#/answer_details/0"
+    },
+    {
+      "error_traceback": "Traceback (most recent call last):\n  File \"d:\\tudui\\rag_challenge\\rag-challenge-2\\src\\questions_processing.py\", line 305, in _process_single_question\n    answer_dict = self.process_question(question_text, schema)\n  File \"d:\\tudui\\rag_challenge\\rag-challenge-2\\src\\questions_processing.py\", line 210, in process_question\n    answer_dict = self.get_answer_for_company(company_name=company_name, question=question, schema=schema)\n  File \"d:\\tudui\\rag_challenge\\rag-challenge-2\\src\\questions_processing.py\", line 156, in get_answer_for_company\n    answer_dict = self.openai_processor.get_answer_from_rag_context(\n  File \"d:\\tudui\\rag_challenge\\rag-challenge-2\\src\\api_requests.py\", line 425, in get_answer_from_rag_context\n    answer_dict = self.processor.send_message(\n  File \"d:\\tudui\\rag_challenge\\rag-challenge-2\\src\\api_requests.py\", line 65, in send_message\n    completion = self.llm.beta.chat.completions.parse(**params)\n  File \"D:\\tudui\\rag_challenge\\RAG-Challenge-2\\venv\\lib\\site-packages\\openai\\resources\\beta\\chat\\completions.py\", line 150, in parse\n    return self._post(\n  File \"D:\\tudui\\rag_challenge\\RAG-Challenge-2\\venv\\lib\\site-packages\\openai\\_base_client.py\", line 1277, in post\n    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))\n  File \"D:\\tudui\\rag_challenge\\RAG-Challenge-2\\venv\\lib\\site-packages\\openai\\_base_client.py\", line 954, in request\n    return self._request(\n  File \"D:\\tudui\\rag_challenge\\RAG-Challenge-2\\venv\\lib\\site-packages\\openai\\_base_client.py\", line 1058, in _request\n    raise self._make_status_error_from_response(err.response) from None\nopenai.PermissionDeniedError: Error code: 403 - {'error': {'message': 'Access denied. For details, see: https://help.aliyun.com/zh/model-studio/error-code#access-denied', 'type': 'access_denied', 'param': None, 'code': 'access_denied'}, 'request_id': 'b1f962ad-537e-4f8c-ba89-475bef69171c'}\n",
+      "self": "#/answer_details/1"
+    },
+    {
+      "error_traceback": "Traceback (most recent call last):\n  File \"d:\\tudui\\rag_challenge\\rag-challenge-2\\src\\questions_processing.py\", line 305, in _process_single_question\n    answer_dict = self.process_question(question_text, schema)\n  File \"d:\\tudui\\rag_challenge\\rag-challenge-2\\src\\questions_processing.py\", line 210, in process_question\n    answer_dict = self.get_answer_for_company(company_name=company_name, question=question, schema=schema)\n  File \"d:\\tudui\\rag_challenge\\rag-challenge-2\\src\\questions_processing.py\", line 156, in get_answer_for_company\n    answer_dict = self.openai_processor.get_answer_from_rag_context(\n  File \"d:\\tudui\\rag_challenge\\rag-challenge-2\\src\\api_requests.py\", line 425, in get_answer_from_rag_context\n    answer_dict = self.processor.send_message(\n  File \"d:\\tudui\\rag_challenge\\rag-challenge-2\\src\\api_requests.py\", line 65, in send_message\n    completion = self.llm.beta.chat.completions.parse(**params)\n  File \"D:\\tudui\\rag_challenge\\RAG-Challenge-2\\venv\\lib\\site-packages\\openai\\resources\\beta\\chat\\completions.py\", line 150, in parse\n    return self._post(\n  File \"D:\\tudui\\rag_challenge\\RAG-Challenge-2\\venv\\lib\\site-packages\\openai\\_base_client.py\", line 1277, in post\n    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))\n  File \"D:\\tudui\\rag_challenge\\RAG-Challenge-2\\venv\\lib\\site-packages\\openai\\_base_client.py\", line 954, in request\n    return self._request(\n  File \"D:\\tudui\\rag_challenge\\RAG-Challenge-2\\venv\\lib\\site-packages\\openai\\_base_client.py\", line 1058, in _request\n    raise self._make_status_error_from_response(err.response) from None\nopenai.PermissionDeniedError: Error code: 403 - {'error': {'message': 'Access denied. For details, see: https://help.aliyun.com/zh/model-studio/error-code#access-denied', 'type': 'access_denied', 'param': None, 'code': 'access_denied'}, 'request_id': '4972137f-4be1-49cc-8cc7-5bae72fc3af3'}\n",
+      "self": "#/answer_details/2"
+    },
+    {
+      "error_traceback": "Traceback (most recent call last):\n  File \"d:\\tudui\\rag_challenge\\rag-challenge-2\\src\\questions_processing.py\", line 305, in _process_single_question\n    answer_dict = self.process_question(question_text, schema)\n  File \"d:\\tudui\\rag_challenge\\rag-challenge-2\\src\\questions_processing.py\", line 210, in process_question\n    answer_dict = self.get_answer_for_company(company_name=company_name, question=question, schema=schema)\n  File \"d:\\tudui\\rag_challenge\\rag-challenge-2\\src\\questions_processing.py\", line 156, in get_answer_for_company\n    answer_dict = self.openai_processor.get_answer_from_rag_context(\n  File \"d:\\tudui\\rag_challenge\\rag-challenge-2\\src\\api_requests.py\", line 425, in get_answer_from_rag_context\n    answer_dict = self.processor.send_message(\n  File \"d:\\tudui\\rag_challenge\\rag-challenge-2\\src\\api_requests.py\", line 65, in send_message\n    completion = self.llm.beta.chat.completions.parse(**params)\n  File \"D:\\tudui\\rag_challenge\\RAG-Challenge-2\\venv\\lib\\site-packages\\openai\\resources\\beta\\chat\\completions.py\", line 150, in parse\n    return self._post(\n  File \"D:\\tudui\\rag_challenge\\RAG-Challenge-2\\venv\\lib\\site-packages\\openai\\_base_client.py\", line 1277, in post\n    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))\n  File \"D:\\tudui\\rag_challenge\\RAG-Challenge-2\\venv\\lib\\site-packages\\openai\\_base_client.py\", line 954, in request\n    return self._request(\n  File \"D:\\tudui\\rag_challenge\\RAG-Challenge-2\\venv\\lib\\site-packages\\openai\\_base_client.py\", line 1058, in _request\n    raise self._make_status_error_from_response(err.response) from None\nopenai.PermissionDeniedError: Error code: 403 - {'error': {'message': 'Access denied. For details, see: https://help.aliyun.com/zh/model-studio/error-code#access-denied', 'type': 'access_denied', 'param': None, 'code': 'access_denied'}, 'request_id': '7b3ee85e-305b-4f33-b951-2c39f7961c33'}\n",
+      "self": "#/answer_details/3"
+    },
+    {
+      "error_traceback": "Traceback (most recent call last):\n  File \"d:\\tudui\\rag_challenge\\rag-challenge-2\\src\\questions_processing.py\", line 305, in _process_single_question\n    answer_dict = self.process_question(question_text, schema)\n  File \"d:\\tudui\\rag_challenge\\rag-challenge-2\\src\\questions_processing.py\", line 210, in process_question\n    answer_dict = self.get_answer_for_company(company_name=company_name, question=question, schema=schema)\n  File \"d:\\tudui\\rag_challenge\\rag-challenge-2\\src\\questions_processing.py\", line 156, in get_answer_for_company\n    answer_dict = self.openai_processor.get_answer_from_rag_context(\n  File \"d:\\tudui\\rag_challenge\\rag-challenge-2\\src\\api_requests.py\", line 425, in get_answer_from_rag_context\n    answer_dict = self.processor.send_message(\n  File \"d:\\tudui\\rag_challenge\\rag-challenge-2\\src\\api_requests.py\", line 65, in send_message\n    completion = self.llm.beta.chat.completions.parse(**params)\n  File \"D:\\tudui\\rag_challenge\\RAG-Challenge-2\\venv\\lib\\site-packages\\openai\\resources\\beta\\chat\\completions.py\", line 150, in parse\n    return self._post(\n  File \"D:\\tudui\\rag_challenge\\RAG-Challenge-2\\venv\\lib\\site-packages\\openai\\_base_client.py\", line 1277, in post\n    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))\n  File \"D:\\tudui\\rag_challenge\\RAG-Challenge-2\\venv\\lib\\site-packages\\openai\\_base_client.py\", line 954, in request\n    return self._request(\n  File \"D:\\tudui\\rag_challenge\\RAG-Challenge-2\\venv\\lib\\site-packages\\openai\\_base_client.py\", line 1058, in _request\n    raise self._make_status_error_from_response(err.response) from None\nopenai.PermissionDeniedError: Error code: 403 - {'error': {'message': 'Access denied. For details, see: https://help.aliyun.com/zh/model-studio/error-code#access-denied', 'type': 'access_denied', 'param': None, 'code': 'access_denied'}, 'request_id': 'b6957f94-d4e0-41cd-a209-5ba36b1f948d'}\n",
+      "self": "#/answer_details/4"
+    }
+  ],
+  "statistics": {
+    "total_questions": 5,
+    "error_count": 5,
+    "na_count": 0,
+    "success_count": 0
+  }
+}
